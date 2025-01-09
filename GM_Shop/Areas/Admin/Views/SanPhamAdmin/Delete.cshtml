@@ -1,0 +1,90 @@
+﻿@model GM_Shop.Areas.Admin.Models.SanPhamAdmin
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Xoá Sản Phẩm</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Mã Sản Phẩm
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MASP)
+        </dd>
+        <dt class="col-sm-2">
+            Tên Sản Phẩm
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TENSP)
+        </dd>
+        <dt class="col-sm-2">
+            Đơn Giá
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DONGIA.ToString("#,##0 VND")
+        </dd>
+        <dt class="col-sm-2">
+            Số Lượng
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SOLUONG)
+        </dd>
+        <dt class="col-sm-2">
+            Mô Tả
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MOTA)
+        </dd>
+        <dt class="col-sm-2">
+            Đánh Giá 
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DANHGIA)
+        </dd>
+        <dt class="col-sm-2">
+            Ảnh
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/Images/SanPhams/@Model.ANH" alt="Ảnh sản phẩm" style="max-width: 100px; max-height: 100px;" />
+        </dd>
+        <dt class="col-sm-2">
+            Danh Mục Sản Phẩm
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DanhMucSP.TENDMSP
+        </dd>
+        <dt class="col-sm-2">
+            Thương hiệu
+        </dt>
+        <dd class="col-sm-10">
+            @Model.ThuongHieu.TENTHUONGHIEU
+        </dd>
+        <dt class="col-sm-2">
+            Thông sô kỹ thuật
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.ThongSoKyThuat != null)
+            {
+                <ul>
+                    <li><strong>Tên thông số kỹ thuật:</strong> @Model.ThongSoKyThuat.TENTSKT</li>
+                    <li><strong>Hệ điều hành:</strong> @Model.ThongSoKyThuat.HEDIEUHANH</li>
+                    <li><strong>RAM:</strong> @Model.ThongSoKyThuat.RAM </li>
+                    <li><strong>ROM:</strong> @Model.ThongSoKyThuat.ROM</li>
+                    <li><strong>Kích cỡ màn hình:</strong> @Model.ThongSoKyThuat.KICHCOMANHINH </li>
+                    <li><strong>Vi xử lý:</strong> @Model.ThongSoKyThuat.VIXULY</li>
+                    <li><strong>Pin:</strong> @Model.ThongSoKyThuat.PIN </li>
+                    <li><strong>Camera:</strong> @Model.ThongSoKyThuat.CAMERA</li>
+                </ul>
+            }
+        </dd>
+    </dl>
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
+    </form>
+</div>
+

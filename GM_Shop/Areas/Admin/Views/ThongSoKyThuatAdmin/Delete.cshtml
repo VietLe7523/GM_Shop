@@ -1,0 +1,72 @@
+﻿@model GM_Shop.Areas.Admin.Models.ThongSoKyThuatAdmin
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Xoá Thông Số Kỹ Thuật</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Mã Thông Số Kỹ Thuật
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MATSKT)
+        </dd>
+        <dt class="col-sm-2">
+            Tên Thông Số Kỹ Thuật
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TENTSKT)
+        </dd>
+        <dt class = "col-sm-2">
+            Hệ Điều Hành
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HEDIEUHANH)
+        </dd>
+        <dt class = "col-sm-2">
+            RAM
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RAM)
+        </dd>
+        <dt class = "col-sm-2">
+            ROM
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ROM)
+        </dd>
+        <dt class = "col-sm-2">
+            Kích Cỡ Màn Hình
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.KICHCOMANHINH)
+        </dd>
+        <dt class = "col-sm-2">
+            Vi Xử Lý
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VIXULY)
+        </dd>
+        <dt class = "col-sm-2">
+            PIN
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PIN)
+        </dd>
+        <dt class = "col-sm-2">
+            Camera
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CAMERA)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
+    </form>
+</div>

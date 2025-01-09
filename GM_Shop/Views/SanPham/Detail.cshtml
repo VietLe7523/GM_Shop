@@ -1,0 +1,130 @@
+﻿@model GM_Shop.Models.SanPham
+@{
+    ViewData["Title"] = "Detail";
+}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Detail</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Sản phẩm</p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Detail</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Shop Detail Start -->
+<div class="container-fluid py-5 mt-5">
+    <div class="container py-5">
+        <div class="row g-3 mb-5">
+            <!-- Product Detail Start -->
+            <div class="col-lg-8 col-xl-9">
+                <div class="row g-4">
+                    <div class="col-lg-5">
+                        <div class="border rounded">
+                            <a href="#">
+                                <img src="~/Images/SanPhams/@Model.ANH" class="img-fluid rounded" alt="Image" />
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <h4 class="font-weight-semi-bold">@Model.TENSP</h4>
+                        <p class="mb-3">Danh mục: @Model.DanhMucSP.TENDMSP</p>
+                        <h5 class="font-weight-semi-bold mb-4">@Model.DONGIA.ToString("#,##0 VND")</h5>
+                        <p class="mb-4">@Model.MOTA</p>
+                        <div class="d-flex mb-4">
+                            @{
+                                int fullStars = (int)Model.DANHGIA; // Số sao đầy
+                                double fractionalStar = Model.DANHGIA - fullStars; // Phần thập phân của sao
+                                int halfStars = fractionalStar >= 0.25 && fractionalStar < 0.75 ? 1 : 0; // Sao nửa
+                                if (fractionalStar >= 0.75) fullStars++; // Làm tròn sao lên nếu gần 1
+                                int emptyStars = 5 - fullStars - halfStars; // Số sao rỗng
+                            }
+
+                            <!-- Hiển thị sao đầy -->
+                            @for (int i = 0; i < fullStars; i++)
+                            {
+                                <i class="fa-solid fa-star text-warning"></i>
+                            }
+
+                            <!-- Hiển thị sao nửa nếu có -->
+                            @if (halfStars > 0)
+                            {
+                                <i class="fa-regular fa-star-half-stroke text-warning"></i>
+                            }
+
+                            <!-- Hiển thị sao rỗng -->
+                            @for (int i = 0; i < emptyStars; i++)
+                            {
+                                <i class="fa-regular fa-star text-warning"></i>
+                            }
+                        </div>
+                        <form asp-controller="GioHang" asp-action="AddToCart" asp-route-id="@Model.MASP">
+                            <div class="input-group quantity mb-5" style="width: 100px">
+                                <div class="input-group-btn">
+                                    <button type="button"
+                                            class="btn btn-sm btn-minus rounded-circle bg-light border"
+                                            onclick="decreaseQuantity(this)">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="number"
+                                       name="quantity"
+                                       class="form-control form-control-sm text-center border-0"
+                                       value="1"
+                                       min="1" />
+                                <div class="input-group-btn">
+                                    <button type="button"
+                                            class="btn btn-sm btn-plus rounded-circle bg-light border"
+                                            onclick="increaseQuantity(this)">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                <i class="fa fa-shopping-bag me-2 text-primary"></i>
+                                Add to cart
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Product Detail End -->
+            <!-- Right Panel Start -->
+            <div class="col-lg-4 col-xl-3">
+                <div class="row g-4 fruite">
+                    <div class="col-lg-12">
+                        @await Component.InvokeAsync("MenuDanhMuc")
+                    </div>
+                    <div class="col-lg-12">
+                        @await Component.InvokeAsync("FeaturedProducts", new{ limit = 5 })
+                    </div>
+                </div>
+            </div>
+            <!-- Right Panel End -->
+        </div>
+        <!-- Products Start -->
+        @await Component.InvokeAsync("RelatedProducts", new { maDMSP = Model.MADMSP, currentMASP = Model.MASP, limit = 4 })
+        <!-- Products End -->
+    </div>
+</div>
+<!-- Shop Detail End -->
+<script>
+    function increaseQuantity(button) {
+        var input = button.closest('.input-group').querySelector('input[name="quantity"]');
+        input.value = parseInt(input.value) + 1;
+    }
+
+    function decreaseQuantity(button) {
+        var input = button.closest('.input-group').querySelector('input[name="quantity"]');
+        if (parseInt(input.value) > 1) {
+            input.value = parseInt(input.value) - 1;
+        }
+    }
+</script>
+
+

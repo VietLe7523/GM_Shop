@@ -1,0 +1,183 @@
+﻿@model IEnumerable<GM_Shop.Models.CartItem> 
+ 
+<!-- Single Page Header start --> 
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Giỏ hàng</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Giỏ hàng</p>
+        </div>
+    </div>
+</div>
+<!-- Single Page Header End --> 
+<!-- Cart Page Start --> 
+<div class="container-fluid py-5"> 
+    <div class="container py-5">
+        <!-- Alert Success Start -->
+        @if
+        (!string.IsNullOrWhiteSpace(TempData["CheckOutSuccessMessage"]?.ToString()))
+        {
+            <div class="w-100 d-flex justify-content-end">
+                <div class="alert alert-success alert-dismissible fade show r-0 mr-5" role="alert" id="alert_message" style="width:40%">
+                    <strong>Success!</strong>
+                    @TempData["CheckOutSuccessMessage"]?.ToString()
+                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        }
+        <!-- Alert Success End -->
+        <!-- Alert Error Start -->
+        @if
+        (!string.IsNullOrWhiteSpace(TempData["CheckOutErrorMessage"]?.ToString()))
+        {
+            <div class="w-100 d-flex justify-content-end">
+                <div class="alert alert-danger alert-dismissible fade show r-0 mr-5" role="alert" id="alert_message" style="width:40%">
+                    <strong>Success!</strong>
+                    @TempData["CheckOutErrorMessage"]?.ToString()
+                    <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"> </button>
+                </div>
+            </div>
+        }
+        <!-- Alert Error End -->
+        <div class="table-responsive"> 
+            <table class="table"> 
+                <thead> 
+                    <tr> 
+                        <th scope="col">Sản phẩm</th> 
+                        <th scope="col">Tên sản phẩm</th> 
+                        <th scope="col">Giá</th> 
+                        <th scope="col">Số lượng</th> 
+                        <th scope="col">Tổng giá</th> 
+                        <th scope="col">Xoá</th> 
+                    </tr> 
+                </thead> 
+                <tbody> 
+                    @foreach (var item in Model) 
+                    { 
+                        <tr id="idProduct-@item.MASP"> 
+                            <th scope="row">
+                                <div class="d-flex align-items-center">
+                                    <img src="~/Images/SanPhams/@item.ANH"
+                                         class="img-fluid me-5"
+                                         style="width: 100px; height: 100px;"
+                                         alt="@item.ANH">
+                                </div>
+
+                            </th> 
+                            <td> 
+                                <p class="mb-0 mt-4">@item.TENSP</p> 
+                            </td> 
+                            <td> 
+                                <p class="mb-0 mt-4">@item.DONGIA.ToString("#,##0 VND")</p> 
+                            </td> 
+                            <td> 
+                                <div class="input-group quantity mt-4" style="width: 100px;"> 
+                                    <div class="input-group-btn"> 
+                                         <a asp-controller="GioHang" asp-action="ChangeQuantityCart" 
+                                           asp-route-id="@item.MASP" asp-route-isIncrement="false" 
+                                           class="btn btn-sm btn-minus rounded-circle bg-light border"> 
+                                            <i class="fa fa-minus"></i> 
+                                        </a>  
+                                    </div> 
+                                    <input type="number" 
+                                           class="form-control form-control-sm text-center border-0" 
+                                           value="@item.SOLUONG"> 
+                                    <div class="input-group-btn"> 
+                                         <a asp-controller="GioHang" asp-action="ChangeQuantityCart" 
+                                           asp-route-id="@item.MASP" asp-route-isIncrement="true" 
+                                           class="btn btn-sm btn-plus rounded-circle bg-light border"> 
+                                            <i class="fa fa-plus"></i> 
+                                        </a>  
+                                    </div> 
+                                </div> 
+                            </td> 
+                            <td> 
+                                <p class="mb-0 mt-4">@item.Total.ToString("#,##0 VND")</p> 
+                            </td> 
+                            <td>
+                                <button onclick="clickDeleteProduct(@item.MASP)"
+                                        class="btn btn-md rounded-circle bg-light border mt-4">
+                                    <i class="fa fa-times text-danger"></i>
+                                </button>
+
+                            </td> 
+                        </tr> 
+                    } 
+                </tbody> 
+            </table> 
+        </div> 
+        <div class="row g-4 justify-content-end"> 
+            <form asp-controller="GioHang" asp-action="CheckOut" class="row g-4 justify-content-end"> 
+                <div class="col-8"></div> 
+                <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4"> 
+                    <div class="bg-light rounded"> 
+                        <div id="totalCheckout" class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                            <h5 class="mb-0 ps-4 me-4">Tổng tiền</h5> 
+                            <p class="mb-0 pe-4">@Model.Sum(p => p.Total).ToString("#,##0 VND")</p> 
+                        </div> 
+                        <button class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="submit">Thanh toán</button> 
+                    </div> 
+                </div> 
+            </form>
+        </div> 
+    </div> 
+</div> 
+<!-- Cart Page End -->
+<script>
+
+    // ------------- Auto Close Alert ----------------
+    const alert_error = document.getElementById("alert_message")
+    window.setTimeout(function () {
+        $(".alert").fadeTo(500, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 2000);
+    //------------- Delete Product Start ---------------
+    function clickDeleteProduct(idProduct) {
+        $.ajax({
+            url: '@Url.Action("RemoveCart", "GioHang")',
+            data: { id: idProduct },
+            success: function (data) {
+                console.log("Delete Success ", idProduct);
+                //Không hiển thị hàng hóa đó nữa
+                const idName = "#idProduct-" + idProduct;
+                console.log(idName);
+                $(idName).remove();
+
+                //Load lại tổng tiền thanh toán
+                $.ajax({
+                    url: '@Url.Action("GetTotalAmount", "GioHang")',
+                    success: function (total) {
+                        $("#totalCheckout p").text(total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " VND");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("Error updating total amount.");
+                    }
+                });
+                //Load lại Cart ViewComponent
+                $.ajax({
+                    url: '@Url.Action("RefreshCartViewComponent", "GioHang")',
+                    success: function (data) {
+                        console.log(data)
+                        $("#cart_view_component").html(data);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(thrownError)
+                        alert("Error updating Cart ViewComponent.");
+                    }
+                });
+
+                //call is successfully completed and we got result in data
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //some errror, some show err msg to user and log the error
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    //------------- Delete Product End ---------------
+
+</script>

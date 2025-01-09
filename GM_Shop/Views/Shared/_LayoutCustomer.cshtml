@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GM SHOP</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+          rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    
+    <!-- Libraries Stylesheet -->
+    <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet" />
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" />
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+
+</head>
+<body>
+    <!-- Topbar Start -->
+    <div class="container-fluid">
+        <div class="row align-items-center py-3 px-xl-5">
+            <div class="d-flex justify-content-between w-100">
+                <!-- Left-side info (address and email) -->
+                <div class="top-info ps-2">
+                    <small class="me-3" style="color: black;">
+                        <i class="fas fa-map-marker-alt me-2 text-secondary"></i>
+                        <a href="#" class="text-dark">Nha Trang, Khánh Hoà</a>
+                    </small>
+                    <small class="me-3" style="color: black;">
+                        <i class="fas fa-envelope me-2 text-secondary"></i>
+                        <a href="#" class="text-dark">viet.lq.63cntt@ntu.edu.vn</a>
+                    </small>
+                </div>
+
+                <!-- Right-side login or profile link -->
+                <div class="top-link pe-2 text-end">
+                    @if (Context.User.Identity.IsAuthenticated)
+                    {
+                        <label style="font-weight:400; font-size:12px; color:black; margin-top:2px;">Xin chào</label>
+                        <a asp-area="" asp-controller="KhachHang" asp-action="Profile" class="text-dark ms-2">
+                            <small class="text-dark font-weight-bold">
+                                @Context.User.Identity.Name
+                            </small>
+                        </a>
+                        <span class="text-dark mx-2">/</span>
+                        <a asp-area="" asp-controller="KhachHang" asp-action="SignOut" class="text-dark font-weight-bold">
+                            <small class="text-dark">Đăng xuất</small>
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="" asp-controller="KhachHang" asp-action="SignIn" class="text-dark ms-2">
+                            <small class="text-dark">Đăng nhập</small>
+                        </a>
+                        <span class="text-dark mx-2">/</span>
+                        <a asp-area="" asp-controller="KhachHang" asp-action="SignUp" class="text-dark ms-2">
+                            <small class="text-dark">Đăng ký</small>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Topbar End -->
+    <!-- Navbar Start -->
+    <div class="container-fluid mb-5">
+        <div class="row border-top px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="text-decoration-none">
+                    <h1 class="mt-4 display-5 font-weight-semi-bold text-primary">GM SHOP</h1>
+                </a>
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg navbar-light py-3 py-lg-0">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                        <div class="navbar-nav">
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Home</a>
+                                <a asp-area="" asp-controller="SanPham" asp-action="Index" class="nav-item nav-link">Sản phẩm</a>
+                                <a asp-area="" asp-controller="Contact" asp-action="Index" class="nav-item nav-link">Liên hệ</a>
+                            }
+                            else if (User.IsInRole("Customer"))
+                            {
+                                <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Home</a>
+                                <a asp-area="" asp-controller="SanPham" asp-action="Index" class="nav-item nav-link">Sản phẩm</a>
+                                <a asp-area="" asp-controller="Contact" asp-action="Index" class="nav-item nav-link">Liên hệ</a>
+                            }
+                            else
+                            {
+                                <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-item nav-link active">Home</a>
+                                <a asp-area="" asp-controller="SanPham" asp-action="Index" class="nav-item nav-link">Sản phẩm</a>
+                                <a asp-area="" asp-controller="Contact" asp-action="Index" class="nav-item nav-link">Liên hệ</a>
+                                <a asp-area="Admin" asp-controller="SanPhamAdmin" asp-action="Index" class="nav-item nav-link">Admin</a>
+                            }
+                           
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div id="cart_view_component">
+                                @await Component.InvokeAsync("Cart")
+                            </div>
+                            <a asp-area="" asp-controller="KhachHang" asp-action="Profile" class="my-auto">
+                                <i class="fas fa-user fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar End -->
+
+    <div>
+        @RenderBody()
+    </div>
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-dark mt-5 pt-3">
+        <div class="row px-xl-5 pt-5">
+            <div class="col-lg-4 col-md-12 mb-3 pr-3 pr-xl-5">
+                <a href="" class="text-decoration-none">
+                    <h1 class="mb-3 display-5 font-weight-semi-bold text-primary ">GM SHOP</h1>
+                </a>
+                <p>GM Shop là một hệ thống bán lẻ trực tuyến chuyên cung cấp các sản phẩm điện tử, đặc biệt là các loại điện thoại di động,
+                    và các thiết bị công nghệ khác. Với mục tiêu mang lại trải nghiệm mua sắm tiện lợi, GM Shop cung cấp một nền tảng mua sắm trực tuyến dễ dàng sử dụng, 
+                    giúp khách hàng dễ dàng tiếp cận và lựa chọn các sản phẩm phù hợp với nhu cầu của mình</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3 me-2"></i>Nha Trang, Khánh Hoà</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3 me-2"></i>viet.lq.63cntt@ntu.edu.vn</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3 me-2"></i>+012 345 67890</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <div class="d-flex flex-column justify-content-start">
+                            <a class="text-dark mb-2" asp-controller="Home" asp-action="Index"><i class="fa fa-angle-right mr-2"></i>Home</a>
+                            <a class="text-dark mb-2" asp-controller="SanPham" asp-action="Index"><i class="fa fa-angle-right mr-2"></i>Shop</a>
+                            <a class="text-dark mb-2" asp-controller="GioHang" asp-action="Index"><i class="fa fa-angle-right mr-2"></i>Giỏ hàng</a>
+                            <a class="text-dark"  asp-controller="Contact" asp-action="Index"><i class="fa fa-angle-right mr-2"></i>Liên hệ</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-5">
+                        <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
+                        <form action="">
+                            <div class="form-group">
+                                <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
+                                       required="required" />
+                            </div>
+                            <div>
+                                <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top border-light mx-xl-5 py-4">
+            <div class="col-md-6 px-xl-0">
+                <p class="mb-md-0 text-center text-md-left text-dark">
+                    Được làm bởi Lê Quốc Việt
+                </p>
+            </div>
+            <div class="col-md-6 px-xl-0 text-center text-md-right">
+                <img class="img-fluid" src="img/payments.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- Template Javascript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/lib/lightbox/js/lightbox.min.js"></script>
+    <script src="~/lib/easing/easing.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

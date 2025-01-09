@@ -1,0 +1,140 @@
+﻿@model GM_Shop.Areas.Admin.Models.SanPhamFormAdmin
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Chỉnh Sửa Sản Phẩm</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TENSP" class="control-label">Tên Sản Phẩm</label>
+                <input asp-for="TENSP" class="form-control" value="@Model.TENSP"/>
+                <span asp-validation-for="TENSP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DONGIA" class="control-label">Đơn Giá</label>
+                <input asp-for="DONGIA" class="form-control" value="@Model.DONGIA.ToString("#,##0 VND")" />
+                <span asp-validation-for="DONGIA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SOLUONG" class="control-label">Số Lượng</label>
+                <input asp-for="SOLUONG" class="form-control" />
+                <span asp-validation-for="SOLUONG" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MOTA" class="control-label">Mô Tả</label>
+                <input asp-for="MOTA" class="form-control" />
+                <span asp-validation-for="MOTA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DANHGIA" class="control-label">Đánh Giá</label>
+                <input asp-for="DANHGIA" class="form-control" />
+                <span asp-validation-for="DANHGIA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ANH" class="control-label">Ảnh</label>
+                <!-- Ẩn input hidden để giữ giá trị ảnh hiện tại -->
+                <input asp-for="ANH" class="form-control" type="hidden" />
+                <br />
+                <!-- Hiển thị ảnh hiện tại -->
+                <img id="previewImage" src="~/Images/SanPhams/@Model.ANH" alt="Ảnh sản phẩm" style="max-width: 100px; max-height: 100px;" />
+                <!-- Input file để chọn ảnh mới -->
+                <input name="Img" type="file" accept="image/gif, image/jpeg, image/png" class="form-control" onchange="previewSelectedImage(event)" />
+                <span asp-validation-for="ANH" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Loại Sản Phẩm</label>
+                <select class="form-select"
+                        asp-items="@Model.DanhMucSPList" asp-for="MaDanhMucSP">
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Thương hiệu</label>
+                <select class="form-select"
+                        asp-items="@Model.ThuongHieuList" asp-for="MaThuongHieu">
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Mã thông số kỹ thuật</label>
+                <select id="MATSTK" class="form-select"
+                        asp-items="@Model.ThongSoKyThuatList" asp-for="MaThongSoKyThuat" onchange="showTechnicalInfo()">
+                </select>
+            </div>
+            <!-- Textarea to display technical details -->
+            <div class="form-group" id="technicalInfoContainer">
+                <label for="TechnicalInfo">Thông số kỹ thuật chi tiết</label>
+                <textarea class="form-control" id="TechnicalInfo" name="TechnicalInfo" rows="8" readonly></textarea>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Hàm này được gọi khi người dùng thay đổi lựa chọn mã thông số kỹ thuật
+        function showTechnicalInfo() {
+            var matskt = document.getElementById("MATSTK").value;
+            var technicalInfoContainer = document.getElementById("technicalInfoContainer");
+
+            if (matskt) {
+                // Gọi API GetTechnicalInfo để lấy thông tin chi tiết thông số kỹ thuật
+                $.ajax({
+                    url: '@Url.Action("GetTechnicalInfo", "SanPhamAdmin")', // Đảm bảo URL chính xác với controller và action
+                    type: 'GET',
+                    data: { id: matskt },
+                    success: function (response) {
+                        // Điền thông tin vào textarea và hiển thị textarea
+                        document.getElementById("TechnicalInfo").value =
+                            "Tên thông số kỹ thuật: " + response.tentskt + "\n" +
+                            "Hệ điều hành: " + response.hedieuhanh + "\n" +
+                            "RAM: " + response.ram + " GB\n" +
+                            "ROM: " + response.rom + "\n" +
+                            "Kích cỡ màn hình: " + response.kichcomanhinh + " inch\n" +
+                            "Vi xử lý: " + response.vixuly + "\n" +
+                            "Pin: " + response.pin + " mAh\n" +
+                            "Camera: " + response.camera;
+
+                        technicalInfoContainer.style.display = "block"; // Hiển thị textarea
+                    },
+                    error: function () {
+                        alert("Không thể lấy thông tin chi tiết.");
+                    }
+                });
+            } else {
+                // Nếu không có Mã thông số kỹ thuật, ẩn textarea
+                technicalInfoContainer.style.display = "none";
+            }
+        }
+        function previewSelectedImage(event) {
+            const fileInput = event.target;
+            const previewImage = document.getElementById('previewImage');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // Gán đường dẫn của ảnh mới vào src của thẻ img
+                    previewImage.src = e.target.result;
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+    </script>
+}

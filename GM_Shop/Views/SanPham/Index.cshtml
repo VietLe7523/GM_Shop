@@ -1,0 +1,185 @@
+﻿@model GM_Shop.Models.SanPhamPagination
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    /* Điều chỉnh chiều cao đồng đều cho thẻ sản phẩm */
+    .product-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%; /* Đảm bảo chiều cao thẻ sản phẩm được điều chỉnh đều */
+    }
+
+    /* Điều chỉnh cho các hình ảnh có chiều cao cố định để thẻ sản phẩm đều hơn */
+    .product-img img {
+        object-fit: cover;
+        width: 100%;
+        height: 300px; /* Điều chỉnh chiều cao của hình ảnh */
+    }
+
+    /* Các phần còn lại của thẻ */
+    .card-body {
+        flex-grow: 1; /* Đảm bảo card-body chiếm không gian còn lại */
+    }
+
+    .card-footer {
+        padding-top: 10px;
+        padding-bottom: 10px; /* Điều chỉnh padding để thẻ không bị quá dài */
+    }
+
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+</style>
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-2">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Shop</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Shop Start -->
+<div class="container-fluid pt-2">
+    <div class="row px-xl-5">
+        <div class="col-12 pb-1">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <form asp-action="Index" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control rounded" placeholder="Tìm kiếm" name="SearchString" value="@ViewData["CurrentFilter"]">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Shop Sidebar Start -->
+        <div class="col-lg-3 col-md-12">
+            @await Component.InvokeAsync("MenuDanhMuc")
+            @await Component.InvokeAsync("MenuThuongHieu")
+        </div>
+        <!-- Shop Sidebar End -->
+        <!-- Shop Product Start -->
+        <div class="col-lg-9 col-md-12">
+            <div class="row pb-3">
+                @foreach (var item in Model.sanPhams)
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                        <div class="card product-item border-1 mb-4">
+                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <a asp-area="" asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.MASP">
+                                    <img class="img-fluid w-100" src="~/Images/SanPhams/@item.ANH" alt="@item.TENSP">
+                                </a>
+                            </div>
+                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                <h6 class="text-truncate mb-3">@item.TENSP</h6>
+                                <div class="d-flex justify-content-center">
+                                    <h6>@item.DONGIA.ToString("#,##0 VND")</h6>
+                                </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-between bg-light border">
+                                <a asp-area="" asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.MASP"
+                                   class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fas fa-eye text-primary me-2 mr-1"></i>View Detail</a>
+                                <button onclick="clickAddToCart(@item.MASP)"
+                                        class="btn border border-secondary rounded-pill px-3 text-primary">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-12">
+                    <div class="pagination d-flex  justify-content-center mt-5">
+                        @if (Model.CurrentPageIndex > 1)
+                        {
+                            <a asp-controller="SanPham" asp-action="Index"
+                               asp-route-idCategory="@ViewData["IdCategory"]"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-idBrand="@ViewData["IdBrand"]"
+                               asp-route-page="@(Model.CurrentPageIndex - 1)"
+                               class="rounded">
+                                &laquo;
+                            </a>
+                        }
+
+                        @for (int i = 1; i <= Model.PageCount; i++)
+                        {
+                            if (i == Model.CurrentPageIndex)
+                            {
+                                <a href="#" class="active rounded">@i</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="SanPham" asp-action="Index"
+                                   asp-route-idCategory="@ViewData["IdCategory"]"
+                                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                                   asp-route-idBrand="@ViewData["IdBrand"]"
+                                   asp-route-page="@i" class="rounded">
+                                    @i
+                                </a>
+                            }
+                        }
+
+                        @if (Model.CurrentPageIndex != Model.PageCount)
+                        {
+                            <a asp-controller="SanPham" asp-action="Index"
+                               asp-route-idCategory="@ViewData["IdCategory"]"
+                               asp-route-searchString="@ViewData["CurrentFilter"]"
+                               asp-route-idBrand="@ViewData["IdBrand"]"
+                               asp-route-page="@(Model.CurrentPageIndex + 1)"
+                               class="rounded">
+                                &raquo;
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Product End -->
+    </div>
+    <!-- SCRIPT Start -->
+    <script>
+        // --------------- AJAX thêm vào giỏ hàng -------------------
+        function clickAddToCart(idProduct) {
+            $.ajax({
+                url: '@Url.Action("AddToCart", "GioHang")',
+                data: { id: idProduct },
+                success: function (data) {
+                    //Load lại Cart ViewComponent
+                    $.ajax({
+                        url: '@Url.Action("RefreshCartViewComponent", "GioHang")',
+                        success: function (data) {
+                            console.log(data)
+                            $("#cart_view_component").html(data);
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.log(thrownError)
+                            alert("Error updating Cart ViewComponent.");
+                        }
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //some errror, some show err msg to user and log the error
+                    alert(xhr.responseText);
+                }
+            });
+        }
+    </script>
+    <!-- SCRIPT End -->
+
+</div>
+<!-- Shop End -->

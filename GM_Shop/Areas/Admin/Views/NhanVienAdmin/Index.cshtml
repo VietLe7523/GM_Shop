@@ -1,0 +1,149 @@
+﻿@model GM_Shop.Areas.Admin.Models.NhanVienAdminModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh Sách Nhân Viên</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã Nhân Viên
+            </th>
+            <th>
+                Họ Nhân Viên
+            </th>
+            <th>
+                Tên Nhân Viên
+            </th>
+            <th>
+                Địa chỉ
+            </th>
+            <th>
+                Số điện thoại
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Giới tính
+            </th>
+            <th>
+                Ảnh
+            </th>
+            <th>
+                CCCD
+            </th>
+            <th>
+                Ngày sinh
+            </th>
+            <th>
+                Chức vụ
+            </th>
+            <th>
+                Tài khoản
+            </th>
+            <th>
+                Mật khẩu
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.NhanVienAdmins) 
+        {
+            <tr>
+                <td>
+                    @item.MANV
+                </td>
+                <td>
+                    @item.HONV
+                </td>
+                <td>
+                    @item.TENNV
+                </td>
+                <td>
+                    @item.DIACHI
+                </td>
+                <td>
+                    @item.SDT
+                </td>
+                <td>
+                    @item.EMAIL
+                </td>
+                <td>
+                    @item.GIOITINH
+                </td>
+                <td>
+                    <img src="~/Images/NhanViens/@item.ANH" alt="Ảnh Nhân viên" style="max-width: 100px; max-height: 100px;" />
+                </td>
+                <td>
+                    @item.CCCD
+                </td>
+                <td>
+                    @item.NGAYSINH
+                </td>
+                <td>
+                    @item.Role?.RoleName
+                </td>
+                <td>
+                    @item.User.TAIKHOAN
+                </td>
+                <td>
+                    @item.User.MATKHAU
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.MANV" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a asp-action="Edit" asp-route-id="@item.MANV" class="btn btn-warning btn-sm">Chỉnh sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.MANV" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<!-- Pagination Start-->
+<div class="col-12">
+    <div class="pagination d-flex justify-content-center mt-5">
+        <!--Button Previous-->
+        @if (Model.CurrentPageIndex > 1)
+        {
+            <a asp-controller="NhanVienAdmin" asp-action="Index"
+               asp-route-page="@(Model.CurrentPageIndex -1)"
+               class="btn btn-outline-dark mx-2">
+                &laquo;
+            </a>
+        }
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            @if (i != Model.CurrentPageIndex)
+            {
+                <a asp-controller="NhanVienAdmin" asp-action="Index"
+                   asp-route-page="@i"
+                   class="btn btn-outline-dark mx-2">
+                    @i
+                </a>
+            }
+            else
+            {
+                //Current Page
+                <a class="btn btn btn-outline-dark active mx-2">@i</a>
+            }
+        }
+        <!-- Button Next -->
+        @if (Model.PageCount != Model.CurrentPageIndex)
+        {
+            <a asp-controller="NhanVienAdmin" asp-action="Index"
+               asp-route-page="@(Model.CurrentPageIndex + 1)"
+               class="btn btn-outline-dark mx-2">
+                &raquo;
+            </a>
+        }
+    </div>
+</div>
+<!-- Pagination End-->

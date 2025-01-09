@@ -1,0 +1,95 @@
+﻿@model GM_Shop.Areas.Admin.Models.NhanVienAdmin
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Chi Tiết Nhân Viên</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Mã nhân viên
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MANV)
+        </dd>
+        <dt class="col-sm-2">
+            Họ nhân viên
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HONV)
+        </dd>
+        <dt class="col-sm-2">
+            Tên nhân viên
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TENNV)
+        </dd>
+        <dt class="col-sm-2">
+            Địa chỉ
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DIACHI)
+        </dd>
+        <dt class="col-sm-2">
+            Số điện thoại
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SDT)
+        </dd>
+        <dt class="col-sm-2">
+            Email
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EMAIL)
+        </dd>
+        <dt class="col-sm-2">
+            Giới tính
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GIOITINH)
+        </dd>
+        <dt class="col-sm-2">
+            Ảnh
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/Images/NhanViens/@Model.ANH" alt="Ảnh sản phẩm" style="max-width: 100px; max-height: 100px;" />
+        </dd>
+        <dt class="col-sm-2">
+            Căn cước công dân
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CCCD)
+        </dd>
+        <dt class="col-sm-2">
+            Ngày sinh
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NGAYSINH)
+        </dd>
+        <dt class="col-sm-2">
+            Chức vụ
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Role.RoleName)
+        </dd>
+        <dt class="col-sm-2">
+            Tài khoản
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.TAIKHOAN)
+        </dd>
+        <dt class="col-sm-2">
+            Mật khẩu
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.MATKHAU)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.MANV" class="btn btn-warning btn-sm">Chỉnh sửa</a>
+    <a asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
+</div>

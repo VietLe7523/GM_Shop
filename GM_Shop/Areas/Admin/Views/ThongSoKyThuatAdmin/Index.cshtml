@@ -1,0 +1,124 @@
+﻿@model GM_Shop.Areas.Admin.Models.ThongSoKyThuatAdminModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh Sách Thông Số Kỹ Thuật</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã Thông Số Kỹ Thuật
+            </th>
+            <th>
+                Tên Thông Số Kỹ Thuật
+            </th>
+            <th>
+                Hệ Điều Hành
+            </th>
+            <th>
+                RAM
+            </th>
+            <th>
+                ROM
+            </th>
+            <th>
+                Kích Cỡ Màn Hình
+            </th>
+            <th>
+                Vi Xử Lý
+            </th>
+            <th>
+                PIN
+            </th>
+            <th>
+                Camera
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ThongSoKyThuatAdmins) {
+            <tr>
+                <td>
+                    @item.MATSKT
+                </td>
+                <td>
+                    @item.TENTSKT
+                </td>
+                <td>
+                    @item.HEDIEUHANH
+                </td>
+                <td>
+                    @item.RAM
+                </td>
+                <td>
+                    @item.ROM
+                </td>
+                <td>
+                    @item.KICHCOMANHINH
+                </td>
+                <td>
+                    @item.VIXULY
+                </td>
+                <td>
+                    @item.PIN
+                </td>
+                <td>
+                    @item.CAMERA
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.MATSKT" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a asp-action="Edit" asp-route-id="@item.MATSKT" class="btn btn-warning btn-sm">Chỉnh sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.MATSKT" class="btn btn-danger btn-sm">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<!-- Pagination Start-->
+<div class="col-12">
+    <div class="pagination d-flex justify-content-center mt-5">
+        <!--Button Previous-->
+        @if (Model.CurrentPageIndex > 1)
+        {
+            <a asp-controller="ThongSoKyThuatAdmin" asp-action="Index"
+               asp-route-page="@(Model.CurrentPageIndex -1)"
+               class="btn btn-outline-dark mx-2">
+                &laquo;
+            </a>
+        }
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            @if (i != Model.CurrentPageIndex)
+            {
+                <a asp-controller="ThongSoKyThuatAdmin" asp-action="Index"
+                   asp-route-page="@i"
+                   class="btn btn-outline-dark mx-2">
+                    @i
+                </a>
+            }
+            else
+            {
+                //Current Page
+                <a class="btn btn btn-outline-dark active mx-2">@i</a>
+            }
+        }
+        <!-- Button Next -->
+        @if (Model.PageCount != Model.CurrentPageIndex)
+        {
+            <a asp-controller="ThongSoKyThuatAdmin" asp-action="Index"
+               asp-route-page="@(Model.CurrentPageIndex + 1)"
+               class="btn btn-outline-dark mx-2">
+                &raquo;
+            </a>
+        }
+    </div>
+</div>
+<!-- Pagination End-->

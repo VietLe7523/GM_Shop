@@ -1,0 +1,74 @@
+﻿@model GM_Shop.Areas.Admin.Models.ThongSoKyThuatAdmin
+
+@{
+    ViewData["Title"] = "Create";
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        <strong>Information: </strong>      @TempData["ErrorMessage"]
+        <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+    </div>
+}
+<h1>Thêm Mới Thông Số Kỹ Thuật</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TENTSKT" class="control-label">Tên Thông Số Kỹ Thuật</label>
+                <input asp-for="TENTSKT" class="form-control" />
+                <span asp-validation-for="TENTSKT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HEDIEUHANH" class="control-label">Hệ Điều Hành</label>
+                <input asp-for="HEDIEUHANH" class="form-control" />
+                <span asp-validation-for="HEDIEUHANH" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RAM" class="control-label">RAM</label>
+                <input asp-for="RAM" class="form-control" />
+                <span asp-validation-for="RAM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ROM" class="control-label">ROM</label>
+                <input asp-for="ROM" class="form-control" />
+                <span asp-validation-for="ROM" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KICHCOMANHINH" class="control-label">Kích Cỡ Màn Hình</label>
+                <input asp-for="KICHCOMANHINH" class="form-control" />
+                <span asp-validation-for="KICHCOMANHINH" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VIXULY" class="control-label">Vi Xử Lý</label>
+                <input asp-for="VIXULY" class="form-control" />
+                <span asp-validation-for="VIXULY" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PIN" class="control-label">PIN</label>
+                <input asp-for="PIN" class="form-control" />
+                <span asp-validation-for="PIN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CAMERA" class="control-label">Camera</label>
+                <input asp-for="CAMERA" class="form-control" />
+                <span asp-validation-for="CAMERA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

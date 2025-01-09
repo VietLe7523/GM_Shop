@@ -1,0 +1,36 @@
+﻿@model GM_Shop.Areas.Admin.Models.ThuongHieuAdmin
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Chỉnh sửa Thương Hiệu</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TENTHUONGHIEU" class="control-label">Tên Thương Hiệu</label>
+                <input asp-for="TENTHUONGHIEU" class="form-control" />
+                <span asp-validation-for="TENTHUONGHIEU" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QUOCGIA" class="control-label">Quốc Gia</label>
+                <input asp-for="QUOCGIA" class="form-control" />
+                <span asp-validation-for="QUOCGIA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

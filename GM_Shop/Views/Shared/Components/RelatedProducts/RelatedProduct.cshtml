@@ -1,0 +1,70 @@
+﻿@model IEnumerable<GM_Shop.Models.SanPham>
+<style>
+    .custom-btn-size {
+        font-size: 14px; /* Điều chỉnh kích thước chữ cho hợp lý */
+        padding: 8px 16px; /* Điều chỉnh padding cho nút để không quá chật */
+    }
+
+</style>
+<!-- Related products Start -->
+<div class="container-fluid py-5">
+    <h1 class="fw-bold mb-4 text-center">Sản phẩm liên quan</h1>
+    <div class="owl-carousel related-carousel justify-content-center">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="product-item border border-primary rounded position-relative overflow-hidden">
+                    <!-- Product Image -->
+                    <div class="product-img" style="position: relative; width: 100%; padding-top: 75%; overflow: hidden;">
+                        <img src="~/Images/SanPhams/@item.ANH"
+                             class="img-fluid rounded-top"
+                             alt="@item.TENSP"
+                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" />
+                    </div>
+                    <!-- Category Label -->
+                    <div class="category-label text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">
+                        @item.DanhMucSP.TENDMSP
+                    </div>
+                    <!-- Product Info -->
+                    <div class="product-info p-3 pb-0 rounded-bottom">
+                        <h5 class="mb-2 text-dark">@item.TENSP</h5>
+                        <p class="text-muted">@item.DONGIA.ToString("#,##0 VND")</p>
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+                            <a asp-area="" asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.MASP"
+                               class="btn btn-outline-secondary rounded-pill text-primary custom-btn-size">
+                                <i class="fa fa-eye text-primary"></i> View Detail
+                            </a>
+                            <a asp-area="" asp-controller="GioHang" asp-action="AddToCart" asp-route-id="@item.MASP"
+                               class="btn btn-outline-secondary rounded-pill text-primary custom-btn-size">
+                                <i class="fas fa-shopping-cart text-primary"></i> Add to cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-center">Không tìm thấy sản phẩm liên quan.</p>
+        }
+    </div>
+</div>
+
+<!-- Related products End -->
+
+<script>
+    $(document).ready(function () {
+        $(".related-carousel").owlCarousel({
+            items: 4,
+            loop: true,
+            margin: 7,
+            nav: false,
+            dots: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            autoplayHoverPause: true
+        });
+    });
+</script>

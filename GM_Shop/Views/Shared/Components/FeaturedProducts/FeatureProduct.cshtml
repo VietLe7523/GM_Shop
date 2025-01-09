@@ -1,0 +1,52 @@
+﻿@model IEnumerable<GM_Shop.Models.SanPham>
+
+<h4 class="mb-4">Sản phẩm nổi bật</h4>
+@foreach (var item in Model)
+{
+    <div class="d-flex align-items-center justify-content-start">
+        <div class="rounded" style="width: 100px; height: 100px">
+            <img src="~/Images/SanPhams/@item.ANH" class="img-fluid rounded"
+                 alt="@item.ANH"
+                 style="width: 90px; height: 50px; object-fit:contain" />
+        </div>
+        <div>
+            <a asp-area="" asp-controller="SanPham" asp-action="Detail" asp-route-id="@item.MASP">
+                <h6 class="mb-2">@item.TENSP</h6>
+            </a>
+            <div class="d-flex mb-4">
+                @{
+                    int fullStars = (int)item.DANHGIA; // Số sao đầy
+                    double fractionalStar = item.DANHGIA - fullStars; // Phần thập phân của sao
+                    int halfStars = fractionalStar >= 0.25 && fractionalStar < 0.75 ? 1 : 0; // Sao nửa
+                    if (fractionalStar >= 0.75) fullStars++; // Làm tròn sao lên nếu gần 1
+                    int emptyStars = 5 - fullStars - halfStars; // Số sao rỗng
+                }
+
+                <!-- Hiển thị sao đầy -->
+                @for (int i = 0; i < fullStars; i++)
+                {
+                    <i class="fa-solid fa-star text-warning"></i>
+                }
+
+                <!-- Hiển thị sao nửa nếu có -->
+                @if (halfStars > 0)
+                {
+                    <i class="fa-regular fa-star-half-stroke text-warning"></i>
+                }
+
+                <!-- Hiển thị sao rỗng -->
+                @for (int i = 0; i < emptyStars; i++)
+                {
+                    <i class="fa-regular fa-star text-warning"></i>
+                }
+            </div>
+            <div class="d-flex mb-2">
+                <h6 class="fw-bold me-2">@item.DONGIA.ToString("#,##0 VND")</h6>
+            </div>
+        </div>
+    </div>
+}
+<div class="d-flex justify-content-center my-4">
+    <a asp-area="" asp-controller="SanPham" asp-action="Index"
+       class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">View More</a>
+</div> 

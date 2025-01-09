@@ -1,0 +1,35 @@
+﻿@model GM_Shop.Areas.Admin.Models.ThuongHieuAdmin
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Chi Tiết Thương Hiệu</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Mã Thương Hiệu
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MATH)
+        </dd>
+        <dt class = "col-sm-2">
+            Tên Thương Hiệu
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TENTHUONGHIEU)
+        </dd>
+        <dt class = "col-sm-2">
+            Quốc Gia
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.QUOCGIA)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.MATH" class="btn btn-warning btn-sm">Chỉnh sửa</a>
+    <a asp-action="Index" class="btn btn-info btn-sm">Back to List</a>
+</div>

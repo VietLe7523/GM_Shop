@@ -1,0 +1,146 @@
+﻿@model GM_Shop.Areas.Admin.Models.SanPhamAdminModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Danh Sách Sản Phẩm</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Thêm mới</a>
+</p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="Index" class="btn btn-outline-dark">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã Sản Phẩm
+            </th>
+            <th>
+                Tên Sản Phẩm
+            </th>
+            <th>
+                Đơn Giá
+            </th>
+            <th>
+                Số Lượng
+            </th>
+            <th>
+                Mô tả
+            </th>
+            <th>
+                Đánh giá
+            </th>
+            <th>
+                Ảnh
+            </th>
+            <th>
+                Danh Mục Sản Phẩm
+            </th>
+            <th>
+                Thương Hiệu
+            </th>
+            <th>
+                Mã Thông Số Kỹ Thuật
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.SanPhamAdmins) {
+        <tr>
+            <td>
+                @item.MASP
+            </td>
+            <td>
+                @item.TENSP
+            </td>
+            <td>
+                    @item.DONGIA.ToString("#,##0 VND")
+            </td>
+            <td>
+                @item.SOLUONG
+            </td>
+            <td>
+                    <span style="line-height:1.5rem; height:4.5rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;  overflow: hidden;">
+                @item.MOTA
+                    </span> 
+            </td>
+            <td>
+                @item.DANHGIA
+            </td>
+            <td>
+                <img src="~/Images/SanPhams/@item.ANH" alt="Ảnh sản phẩm" style="max-width: 100px; max-height: 100px;" />
+            </td>
+            <td>
+                @item.DanhMucSP?.TENDMSP
+            </td>
+            <td>
+                @item.ThuongHieu?.TENTHUONGHIEU
+            </td>
+            <td>
+                @item.ThongSoKyThuat?.MATSKT
+            </td>
+            <td>
+                    <a asp-action="Details" asp-route-id="@item.MASP" class="btn btn-info btn-sm">Chi tiết</a>
+                    <a asp-action="Edit" asp-route-id="@item.MASP" class="btn btn-warning btn-sm">Chỉnh sửa</a>
+                    <a asp-action="Delete" asp-route-id="@item.MASP" class="btn btn-danger btn-sm">Xóa</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<br />
+<!-- Pagination Start-->
+<div class="col-12">
+    <div class="pagination d-flex justify-content-center mt-5">
+        <!--Button Previous-->
+        @if (Model.CurrentPageIndex > 1)
+        {
+            <a asp-controller="SanPhamAdmin" asp-action="Index"
+               asp-route-page="@(Model.CurrentPageIndex -1)"
+               asp-route-searchString="@ViewData["CurrentFilter"]"
+               class="btn btn-outline-dark mx-2">
+                &laquo;
+            </a>
+        }
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            @if (i != Model.CurrentPageIndex)
+            {
+                <a asp-controller="SanPhamAdmin" asp-action="Index"
+                   asp-route-page="@i"
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   class="btn btn-outline-dark mx-2">
+                    @i
+                </a>
+            }
+            else
+            {
+                //Current Page
+                <a class="btn btn btn-outline-dark active mx-2">@i</a>
+            }
+        }
+        <!-- Button Next -->
+        @if (Model.PageCount != Model.CurrentPageIndex)
+        {
+            <a asp-controller="SanPhamAdmin" asp-action="Index"
+               asp-route-page="@(Model.CurrentPageIndex + 1)"
+               asp-route-searchString="@ViewData["CurrentFilter"]"
+               class="btn btn-outline-dark mx-2">
+                &raquo;
+            </a>
+        }
+    </div>
+</div>
+<!-- Pagination End-->
